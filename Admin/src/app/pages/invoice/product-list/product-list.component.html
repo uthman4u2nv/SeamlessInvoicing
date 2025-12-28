@@ -1,0 +1,127 @@
+<app-page-title title="Product" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+<div class="row pb-4 gy-3">
+  <div class="col-sm-4">
+    <a [routerLink]="['/pages/product-add']" class="btn btn-primary addtax-modal"><i class="las la-plus me-1"></i> Add
+      Product</a>
+  </div>
+
+  <div class="col-sm-auto ms-auto">
+    <div class="d-flex gap-3">
+        <div class="search-box">
+            <input type="text" class="form-control" placeholder="Search for name or designation...">
+            <i class="las la-search search-icon"></i>
+        </div>
+        <div ngbDropdown>
+            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false" class="btn btn-soft-info btn-icon fs-14"><i class="las la-ellipsis-v fs-18" ngbDropdownToggle></i></button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1" ngbDropdownMenu>
+                <li><a class="dropdown-item" href="#">All</a></li>
+                <li><a class="dropdown-item" href="#">Last Week</a></li>
+                <li><a class="dropdown-item" href="#">Last Month</a></li>
+                <li><a class="dropdown-item" href="#">Last Year</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive table-card">
+          <table class="table table-nowrap align-middle mb-0">
+            <thead>
+              <tr class="text-muted text-uppercase">
+                <th style="width: 50px;">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                  </div>
+                </th>
+                <th scope="col" style="width: 500px;">Product Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">In Stock</th>
+                <th scope="col">Rate</th>
+                <th scope="col" style="width: 16%;">Price</th>
+                <th scope="col" style="width: 6%;">Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let product of paginateData">
+                <td>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="check{{ product.id }}" value="option">
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3 avatar-sm">
+                      <div class="avatar-title bg-light rounded">
+                        <img [src]="product.image" alt="" class="avatar-xs">
+                      </div>
+                    </div>
+                    <div class="flex-grow-1">
+                      <h6 class="fs-16 mb-1">{{ product.name }}</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.stock }}</td>
+                <td>
+                  <span class="badge bg-light text-body fs-12 fw-medium">
+                    <i class="mdi mdi-star text-warning me-1"></i>{{ product.rating }}
+                  </span>
+                </td>
+                <td>
+                  <div>{{ product.price }}</div>
+                </td>
+                <td>
+                  <div class="dropdown" ngbDropdown>
+                    <button class="btn btn-soft-secondary btn-sm dropdown" type="button" ngbDropdownToggle>
+                      <i class="las la-ellipsis-h align-middle fs-18"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                      <li>
+                        <button class="dropdown-item" href="javascript:void(0);">
+                          <i class="las la-eye fs-18 align-middle me-2 text-muted"></i>View
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item" href="javascript:void(0);">
+                          <i class="las la-pen fs-18 align-middle me-2 text-muted"></i>Edit
+                        </button>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="javascript:void(0);">
+                          <i class="las la-file-download fs-18 align-middle me-2 text-muted"></i>Download
+                        </a>
+                      </li>
+                      <li class="dropdown-divider"></li>
+                      <li>
+                        <a class="dropdown-item remove-item-btn" href="#">
+                          <i class="las la-trash-alt fs-18 align-middle me-2 text-muted"></i>Delete
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody><!-- end tbody -->
+          </table><!-- end table -->
+        </div><!-- end table responsive -->
+      </div>
+    </div>
+
+    <div class="row align-items-center mb-2 gy-3">
+      <div class="col-md-5">
+        Showing <b>{{ startItem + 1 }}</b> to <b>{{ endItem }}</b> of <b>{{ products.length }}</b> results
+      </div>
+      <div class="col-sm-auto ms-auto">
+        <pagination class=".pagination-wrap hstack" [totalItems]="products.length" [itemsPerPage]="itemsPerPage"
+          (pageChanged)="tablepageChanged($event)"></pagination>
+      </div>
+    </div>
+  </div>
+</div>

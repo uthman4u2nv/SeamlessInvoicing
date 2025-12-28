@@ -1,0 +1,83 @@
+<!-- Start Breadcrumbs -->
+<app-page-title title="Transaction List" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+<!-- End Breadcrumbs -->
+
+<div class="row pb-4 gy-3">
+    <div class="col-sm-4">
+        <button class="btn btn-primary addPayment-modal" [routerLink]="['/pages/transaction-new']"><i
+                class="las la-plus me-1"></i> Add Transaction</button>
+    </div>
+
+    <div class="col-sm-auto ms-auto">
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-soft-primary fs-14"><i
+                    class="las la-filter fs-16 align-middle me-2"></i>Filter</button>
+            <div ngbDropdown>
+                <button type="button" id="dropdownMenuLink1" ngbDropdownToggle
+                    class="btn btn-soft-info btn-icon fs-14"><i class="las la-ellipsis-v fs-18"></i></button>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li><a class="dropdown-item" href="#">Print</a></li>
+                    <li><a class="dropdown-item" href="#">Export to Excel</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive table-card">
+                    <table class="table table-hover table-nowrap align-middle mb-0">
+                        <thead>
+                            <tr class="text-muted text-uppercase">
+                                <th scope="col">Member Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Mobile</th>
+                                <th scope="col">Registered On</th>
+                                <th scope="col" style="width: 16%;">Status</th>
+                                <th scope="col" style="width: 12%;">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let transaction of paginateData">
+                                <td>{{ transaction.id }}</td>
+                                <td>{{ transaction.date }}</td>
+                                <td>{{ transaction.description }}</td>
+                                <td>
+                                    <span [ngClass]="{
+          'bg-success-subtle text-success': transaction.type === 'Credit',
+          'bg-danger-subtle text-danger': transaction.type === 'Debit'
+        }" class="badge p-2">
+                                        {{ transaction.type }}
+                                    </span>
+                                </td>
+                                <td>{{ transaction.amount }}</td>
+                                <td>
+                                    <ng-container *ngIf="transaction.download === 'download'; else noDownload">
+                                        <button type="button" class="btn btn-soft-success btn-sm btn-icon fs-14">
+                                            <i class="las la-download fs-18"></i>
+                                        </button>
+                                    </ng-container>
+                                    <ng-template #noDownload>N/A</ng-template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table><!-- end table -->
+                </div><!-- end table responsive -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row align-items-center mb-4 gy-3">
+    <div class="col-md-5">
+        Showing <b>{{ startItem + 1 }}</b> to <b>{{ endItem }}</b> of <b>{{ transactions.length }}</b> results
+    </div>
+    <div class="col-sm-auto ms-auto">
+        <pagination class=".pagination-wrap hstack" [totalItems]="transactions.length"
+            [itemsPerPage]="itemsPerPage" (pageChanged)="tablepageChanged($event)"></pagination>
+    </div>
+</div>

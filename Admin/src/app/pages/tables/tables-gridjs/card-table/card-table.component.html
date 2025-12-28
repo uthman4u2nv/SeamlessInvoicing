@@ -1,0 +1,45 @@
+<div id="table-card" class="table-card">
+    <div class="table-responsive">
+        <table class="table table-gridjs">
+            <thead>
+                <tr>
+                    <th class="gridjs-th sort" sortable="name" (sort)="onSort($event)">Name</th>
+                    <th class="gridjs-th sort" sortable="email" (sort)="onSort($event)">Email</th>
+                    <th class="gridjs-th sort" sortable="position" (sort)="onSort($event)">Position</th>
+                    <th class="gridjs-th sort" sortable="company" (sort)="onSort($event)">Company</th>
+                    <th class="gridjs-th sort" sortable="country" (sort)="onSort($event)">Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (data of gridjsList$ | async; track $index) {
+                <tr class="gridjs-tr">
+                    <td data-column-id="name" class="gridjs-td">{{data.name}}</td>
+                    <td data-column-id="email" class="gridjs-td"><span><a href="">{{data.email}}</a></span>
+                    </td>
+                    <td data-column-id="position" class="gridjs-td">{{data.position}}
+                    </td>
+                    <td data-column-id="company" class="gridjs-td">{{data.company}}</td>
+                    <td data-column-id="country" class="gridjs-td">{{data.country}}</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row justify-content-md-between align-items-md-center mt-3">
+    <div class="col-sm-12 col-md-5">
+        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+            Showing
+            {{service.startIndex}} to
+            {{service.endIndex}} of {{service.totalRecords}}
+            entries
+        </div>
+    </div>
+    <!-- Pagination -->
+    <div class="col-sm-12 col-md-5">
+        <div class="text-md-right float-md-end gridjs-pagination">
+            <pagination [totalItems]="(total$ | async)!" [(ngModel)]="service.page" [itemsPerPage]="service.pageSize"></pagination>
+        </div>
+    </div>
+    <!-- End Pagination -->
+</div>

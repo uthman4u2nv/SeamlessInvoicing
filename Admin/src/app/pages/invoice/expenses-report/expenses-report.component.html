@@ -1,0 +1,77 @@
+<!-- Start Breadcrumbs -->
+<app-page-title title="Expenses Report" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+<!-- End Breadcrumbs -->
+
+<div class="row pb-4 gy-3">
+    <div class="col-sm-4">
+        <div class="d-flex">
+            <div class="search-box">
+                <input type="text" class="form-control" placeholder="Search for Result">
+                <i class="las la-search search-icon"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-auto ms-auto">
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-soft-primary fs-14"><i
+                    class="las la-filter fs-16 align-middle me-2"></i>Filter</button>
+            <div ngbDropdown>
+                <button type="button" id="dropdownMenuLink1" ngbDropdownToggle
+                    class="btn btn-soft-info btn-icon fs-14"><i class="las la-ellipsis-v fs-18"></i></button>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li><a class="dropdown-item" href="#">Print</a></li>
+                    <li><a class="dropdown-item" href="#">Export to Excel</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive table-card">
+                    <table class="table table-hover table-nowrap align-middle mb-0">
+                        <thead>
+                            <tr class="text-muted text-uppercase">
+                                <th scope="col">Expenses</th>
+                                <th scope="col">Company</th>
+                                <th scope="col">Expense Date</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col" style="width: 12%;">Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let expense of paginateData">
+                                <td>
+                                    <p class="fw-medium mb-0">{{ expense.description }}</p>
+                                </td>
+                                <td>{{ expense.vendor }}</td>
+                                <td>{{ expense.date }}</td>
+                                <td>{{ expense.amount }}</td>
+                                <td>
+                                    <span [ngClass]="expense.status.class" class="badge p-2">
+                                        {{ expense.status.label }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table><!-- end table -->
+                </div><!-- end table responsive -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row align-items-center mb-4 gy-3">
+    <div class="col-md-5">
+        Showing <b>{{ startItem + 1 }}</b> to <b>{{ endItem }}</b> of <b>{{ transactions.length }}</b> results
+    </div>
+    <div class="col-sm-auto ms-auto">
+        <pagination class=".pagination-wrap hstack" [totalItems]="transactions.length"
+            [itemsPerPage]="itemsPerPage" (pageChanged)="tablepageChanged($event)"></pagination>
+    </div>
+</div>

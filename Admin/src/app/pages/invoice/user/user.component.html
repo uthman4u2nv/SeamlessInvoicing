@@ -1,0 +1,167 @@
+<!-- Start Breadcrumbs -->
+<app-page-title title="User" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+<!-- End Breadcrumbs -->
+
+<div class="row pb-4 gy-3">
+    <div class="col-sm-4">
+        <button class="btn btn-primary addPayment-modal" (click)="openModalCenter(addpaymentModal)"><i class="las la-plus me-1"></i> Add New</button>
+    </div>
+
+    <div class="col-sm-auto ms-auto">
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-soft-primary fs-14"><i
+                    class="las la-filter fs-16 align-middle me-2"></i>Filter</button>
+            <div ngbDropdown>
+                <button type="button" id="dropdownMenuLink1" ngbDropdownToggle
+                    class="btn btn-soft-info btn-icon fs-14"><i class="las la-ellipsis-v fs-18"></i></button>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li><a class="dropdown-item" href="#">Print</a></li>
+                    <li><a class="dropdown-item" href="#">Export to Excel</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive table-card">
+                    <table class="table table-hover table-nowrap align-middle mb-0">
+                        <thead>
+                            <tr class="text-muted text-uppercase">
+                                <th scope="col">Member Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Mobile</th>
+                                <th scope="col">Registered On</th>
+                                <th scope="col" style="width: 16%;">Status</th>
+                                <th scope="col" style="width: 12%;">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let user of paginateData">
+                                <td>
+                                    <img [src]="user.avatar" alt="" class="avatar-xs rounded-circle me-2" />
+                                    <a href="javascript:void(0);" class="text-body align-middle fw-medium">{{ user.name
+                                        }}</a>
+                                </td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.phone }}</td>
+                                <td>{{ user.date }}</td>
+                                <td>
+                                    <span class="badge p-2" [ngClass]="user.status.class">{{ user.status.label }}</span>
+                                </td>
+                                <td>
+                                    <ul class="list-inline hstack gap-2 mb-0">
+                                        <li class="list-inline-item" placement="top" ngbTooltip="View">
+                                            <a href="" class="btn btn-soft-info btn-sm d-inline-block">
+                                                <i class="las la-eye fs-17 align-middle"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item edit" placement="top" ngbTooltip="Edit">
+                                            <a href="" class="btn btn-soft-info btn-sm d-inline-block">
+                                                <i class="las la-pen fs-17 align-middle"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item" placement="top" ngbTooltip="Remove">
+                                            <a href="" class="btn btn-soft-danger btn-sm d-inline-block">
+                                                <i class="las la-file-download fs-17 align-middle"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table><!-- end table -->
+                </div><!-- end table responsive -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row align-items-center mb-4 gy-3">
+    <div class="col-md-5">
+        Showing <b>{{ startItem + 1 }}</b> to <b>{{ endItem }}</b> of <b>{{ transactions.length }}</b> results
+    </div>
+    <div class="col-sm-auto ms-auto">
+        <pagination class=".pagination-wrap hstack" [totalItems]="transactions.length"
+            [itemsPerPage]="itemsPerPage" (pageChanged)="tablepageChanged($event)"></pagination>
+    </div>
+</div>
+
+<ng-template #addpaymentModal let-modal>
+    <div class="modal-content border-0">
+        <div class="modal-header p-4 pb-0">
+            <h5 class="modal-title" id="createMemberLabel">Add User</h5>
+            <button type="button" class="btn-close" id="createMemberBtn-close" (click)="modal.close('Close click')"></button>
+        </div>
+        <div class="modal-body p-4">
+            <form autocomplete="off" id="memberlist-form" class="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <input type="hidden" id="memberid-input" class="form-control" value="">
+                        <div class="text-center mb-4">
+                            <div class="position-relative d-inline-block">
+                                <div class="position-absolute bottom-0 end-0">
+                                    <label for="member-image-input" class="mb-0" data-bs-toggle="tooltip"
+                                        data-bs-placement="right" title="Select Member Image">
+                                        <div class="avatar-xs">
+                                            <div
+                                                class="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
+                                                <i class="ri-image-fill"></i>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <input class="form-control d-none" value="" id="member-image-input" type="file"
+                                        accept="image/png, image/gif, image/jpeg">
+                                </div>
+                                <div class="avatar-lg">
+                                    <div class="avatar-title bg-light rounded-circle">
+                                        <img src="assets/images/users/user-dummy-img.jpg" id="member-img"
+                                            class="avatar-md rounded-circle h-auto" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 mt-4">
+                            <label for="teammembersName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="teammembersName" placeholder="Enter name"
+                                required>
+                            <div class="invalid-feedback">Please Enter a member name.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="teammembersEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="teammembersEmail" placeholder="Enter email"
+                                required>
+                            <div class="invalid-feedback">Please Enter a member Email.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="teammembersnumber" class="form-label">Phone</label>
+                            <input type="number" class="form-control" id="teammembersnumber" placeholder="Enter number"
+                                required>
+                            <div class="invalid-feedback">Please Enter a member number.</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Select Status</option>
+                                <option value="1">Active</option>
+                                <option value="2">Disabled</option>
+                            </select>
+                        </div>
+
+                        <div class="hstack gap-2 justify-content-end">
+                            <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+                            <button type="submit" class="btn btn-success" id="addNewMember" (click)="modal.close('Close click')">Add User</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>

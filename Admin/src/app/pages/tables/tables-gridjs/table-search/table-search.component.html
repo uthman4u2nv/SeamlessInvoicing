@@ -1,0 +1,56 @@
+<div class="search-box d-inline-block mb-2">
+    <input type="text" class="form-control search" placeholder="Search..." [(ngModel)]="serviceTest.searchTerm">
+    <i class="ri-search-line search-icon"></i>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-gridjs">
+        <thead>
+            <tr class="gridjs-tr">
+                <th class="gridjs-th" style="width: 150px;">
+                    <div class="gridjs-th-content">Name</div>
+                </th>
+                <th class="gridjs-th" style="width: 250px;">
+                    <div class="gridjs-th-content">Email</div>
+                </th>
+                <th class="gridjs-th" style="width: 250px;">
+                    <div class="gridjs-th-content">Position</div>
+                </th>
+                <th class="gridjs-th" style="width: 250px;">
+                    <div class="gridjs-th-content">Company</div>
+                </th>
+                <th class="gridjs-th" style="width: 150px;">
+                    <div class="gridjs-th-content">Country</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (data of gridjsListSearch$ | async; track $index) {
+            <tr class="gridjs-tr">
+                <td data-column-id="name" class="gridjs-td">{{data.name}}</td>
+                <td data-column-id="email" class="gridjs-td">{{data.email}}</td>
+                <td data-column-id="position" class="gridjs-td">{{data.position}}</td>
+                <td data-column-id="company" class="gridjs-td">{{data.company}}</td>
+                <td data-column-id="country" class="gridjs-td">{{data.country}}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row justify-content-md-between align-items-md-center">
+    <div class="col-sm-12 col-md-5">
+        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+            Showing
+            {{serviceTest.startIndex}} to
+            {{serviceTest.endIndex}} of {{serviceTest.totalRecords}}
+            entries
+        </div>
+    </div>
+    <!-- Pagination -->
+    <div class="col-sm-12 col-md-5">
+        <div class="text-md-right float-md-end gridjs-pagination">
+            <pagination [totalItems]="(totalSearch$ | async)!" [(ngModel)]="serviceTest.page" [itemsPerPage]="serviceTest.pageSize"></pagination>
+        </div>
+    </div>
+    <!-- End Pagination -->
+</div>
