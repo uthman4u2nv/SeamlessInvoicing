@@ -4,32 +4,92 @@
             <div class="p-lg-5 p-4">
                 <div class="text-center">
                     <h5 class="mb-0">Create New Account</h5>
-                    <p class="text-muted mt-2">Get your free Invoika account now</p>
+                    <p class="text-muted mt-2">Get your free <strong>SeamlessInvoicing</strong> account now</p>
                 </div>
 
                 <div class="mt-4">
+                    <div *ngIf="start">
+                        <form [formGroup]="startForm" (ngSubmit)="verifyEmail()">
+    <div class="mb-3">
+        <label for="email " class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" formControlName="email" [class.is-invalid]="g.email.touched && g.email.invalid" placeholder="Enter email">
+        <div *ngIf="g.email.touched && g.email.invalid" class="invalid-feedback">
+            <div *ngIf="g.email.errors?.required">This field is required.</div>
+        
+        </div>
+    </div>
+    
+    
+    
+    <div class="mb-2">
+        <label for="userpassword" class="form-label">Password</label>
+        <div class="position-relative auth-pass-inputgroup mb-3">
+            <input type="password" formControlName="password" [class.is-invalid]="g.password.touched && g.password.invalid"  class="form-control pe-5 password-input" placeholder="Enter password"
+                id="password-input">
+            <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                type="button" id="password-addon"><i class="las la-eye align-middle fs-18"></i></button>
+                <!--<small class="text-center">
+                    8 characters | One uppercase |One lowercase | One number | One special character
+                
+                </small>-->
+        </div>
+        
+    </div>
+    <div class="mb-2">
+        <label for="userpassword" class="form-label">Confirm Password</label>
+        <div class="position-relative auth-pass-inputgroup mb-3">
+            <input type="password" (change)="CheckPassword()" formControlName="confPassword" [class.is-invalid]="g.confPassword.touched && g.confPassword.invalid" class="form-control pe-5 password-input" placeholder="Enter password"
+                id="password-input">
+            <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                type="button" id="password-addon"><i class="las la-eye align-middle fs-18"></i></button>
+        </div>
+    </div>
+    <div class="mb-2" *ngIf="showerror">
+        <p class="text-danger text-center">{{confMessage}}</p>
+    </div>
+    <div class="mb-2">
+        <button class="btn btn-primary w-100" type="submit">Submit</button>
+    </div>
+    </form>
+                    </div>
+                    <div *ngIf="confirm">
+                        <p class="text-muted mt-2">Enter the otp sent to the email provided</p>
+                        <form [formGroup]="startForm" (ngSubmit)="verifyEmail()">
+                    <div class="mb-3">
+                        <label for="otp " class="form-label">OTP</label>
+                        <input type="text" class="form-control" id="email" formControlName="email"
+                            [class.is-invalid]="g.email.touched && g.email.invalid" placeholder="Enter email">
+                        <div *ngIf="g.email.touched && g.email.invalid" class="invalid-feedback">
+                            <div *ngIf="g.email.errors?.required">This field is required.</div>
+                    
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <button class="btn btn-success w-100" type="submit">Verify Email</button>
+                    </div>
+                    </form>
+                    </div>
+                    <div *ngIf="finish">
                     <form class="auth-input">
-                        <div class="mb-3">
-                            <label for="email " class="form-label">Email</label>
-                            <input type="text" class="form-control" id="email" placeholder="Enter email">
-                        </div>
 
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="Enter username">
-                        </div>
-
-                        <div class="mb-2">
-                            <label for="userpassword" class="form-label">Password</label>
-                            <div class="position-relative auth-pass-inputgroup mb-3">
-                                <input type="password" class="form-control pe-5 password-input"
-                                    placeholder="Enter password" id="password-input">
-                                <button
-                                    class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
-                                    type="button" id="password-addon"><i
-                                        class="las la-eye align-middle fs-18"></i></button>
+                            <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <label for="username" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" placeholder="Enter First Name">
                             </div>
+                            <div class="col-md-6 col-lg-6">
+                                <label for="username" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name">
+                            </div>
+                            </div>
+                           
                         </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Company Name</label>
+                            <input type="text" class="form-control" id="username" placeholder="Enter Company Name">
+                        </div>
+                    
 
                         <div class="fs-16 pb-2">
                             <p class="mb-0 fs-14 text-muted fst-italic">By registering you agree to the Invoika <a
@@ -72,6 +132,7 @@
                                     class="fw-medium text-primary text-decoration-underline"> Signin </a> </p>
                         </div>
                     </form>
+                    </div>
                 </div>
 
             </div>
