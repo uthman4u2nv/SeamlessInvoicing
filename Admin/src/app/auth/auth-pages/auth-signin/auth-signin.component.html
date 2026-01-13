@@ -4,25 +4,34 @@
             <div class="p-lg-5 p-4">
                 <div class="text-center">
                     <h5 class="mb-0">Welcome Back !</h5>
-                    <p class="text-muted mt-2">Sign in to continue to Invoika.</p>
+                    <p class="text-muted mt-2">Sign in to continue to SeamlessInvoicing.</p>
                 </div>
 
                 <div class="mt-4">
                     <div class="auth-input">
+                        <Form [formGroup]="authForm" (ngSubmit)="Login()">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="Enter username" value="admin@themesbrand.com">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" formControlName="email" [class.is-invalid]="g.email.touched && g.email.invalid" placeholder="info@example.com" >
+                        <div *ngIf="g.email.touched && g.email.invalid" class="invalid-feedback">
+                            <div *ngIf="g.email.errors?.required">This field is required.</div>
+                        
+                        </div>
                         </div>
 
                         <div class="mb-2">
                             <label for="userpassword" class="form-label">Password</label>
                             <div class="position-relative auth-pass-inputgroup mb-3">
                                 <input [type]="!showPw ? 'text' : 'password' " class="form-control pe-5 password-input"
-                                    placeholder="Enter password" id="password-input" value="123456">
+                                    placeholder="Enter password" id="password-input" value="123456" formControlName="password" [class.is-invalid]="g.password.touched && g.password.invalid">
                                 <button (click)="showPw = !showPw"
                                     class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
                                     type="button" id="password-addon"><i 
                                         class="las la-eye align-middle fs-18"></i></button>
+                                        <div *ngIf="g.password.touched && g.password.invalid" class="invalid-feedback">
+                                            <div *ngIf="g.password.errors?.required">This field is required.</div>
+                                        
+                                        </div>
                             </div>
                         </div>
 
@@ -38,10 +47,12 @@
                         </div>
 
                         <div class="mt-2">
-                            <button class="btn btn-primary w-100" type="submit"  [routerLink]="['/pages']">Log In</button>
+                            <button type="submit" class="btn btn-primary w-100" [disabled]="authForm.invalid">
+                               Login </button>
+                            
                         </div>
 
-                        <div class="mt-4 text-center">
+                        <!--<div class="mt-4 text-center">
                             <div class="signin-other-title">
                                 <h5 class="fs-15 mb-3 title">Sign in with</h5>
                             </div>
@@ -66,11 +77,12 @@
                                 </li>
                             </ul>
                         </div>
-
+                    -->
                         <div class="mt-4 text-center"> 
                             <p class="mb-0">Don't have an account ? <a [routerLink]="['/auth/auth-signup']"
                                     class="fw-medium text-primary text-decoration-underline"> Signup now </a> </p>
                         </div>
+                        </Form>
                     </div>
                 </div>
 

@@ -1,4 +1,7 @@
 export const environment = {
   production: false,
-  sendotpurl: 'http://invotaxapi-001-site1.jtempurl.com/api/Auth/SendOtp',
+  sendotpurl: 'https://invotax-api.onrender.com/api/Auth/SendOtp',
+  verifyotpurl: 'https://invotax-api.onrender.com/api/Auth/VerifyOtp',
+  registerurl: 'https://invotax-api.onrender.com/api/Auth/SignUp',
+  loginurl: 'https://invotax-api.onrender.com/api/Auth/Login',
 };

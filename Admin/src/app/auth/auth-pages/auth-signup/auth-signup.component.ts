@@ -9,6 +9,12 @@ import {
   FormsModule,
 } from '@angular/forms';
 import { RegistrationService } from '../../../services/registration.service';
+import { LoadingService } from '../../../services/loading.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+//import { CustomModalComponent } from './custom-modal/custom-modal/custom-modal.component';
+import { SweetAlertService } from '../../../core/services/sweetalert.service';
+import Swal, { SweetAlertIcon, SweetAlertOptions } from 'sweetalert2';
 
 @Component({
   selector: 'app-auth-signup',
@@ -28,10 +34,19 @@ export class AuthSignupComponent {
   confirm: Boolean = false;
   finish: Boolean = false;
   startForm: any;
+  verifyOTPForm: any;
+  submitForm: any;
   showerror: Boolean = false;
   confMessage = '';
+  submitting = false;
+  submit = false;
+  sub = false;
 
-  constructor(private fb: FormBuilder, private rs: RegistrationService) {}
+  constructor(
+    private loading: LoadingService,
+    private fb: FormBuilder,
+    private rs: RegistrationService
+  ) {}
   ngOnInit() {
     this.startForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -56,6 +71,17 @@ export class AuthSignupComponent {
         ],
       ],
     });
+    this.verifyOTPForm = this.fb.group({
+      //email: ['', [Validators.required, Validators.email]],
+      otp: ['', [Validators.required, Validators.minLength(5)]],
+    });
+    this.submitForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
+      organizationName: ['', [Validators.required]],
+    });
   }
   CheckPassword() {
     const password = this.startForm.value.password;
@@ -69,11 +95,41 @@ export class AuthSignupComponent {
       return;
     }
   }
+  verifyOTP() {
+    if (this.verifyOTPForm.invalid) {
+      this.verifyOTPForm.markAllAsTouched();
+      return;
+    }
+    this.submit = true;
+    this.loading.show();
+    let data = {
+      destination: this.startForm.value.email,
+      otpType: 2,
+      otp: this.verifyOTPForm.value.otp,
+    };
+    this.rs.VerifyOTP(data).subscribe((d) => {
+      if (d.isSuccess) {
+        this.submitForm.patchValue({
+          email: this.startForm.value.email,
+        });
+        this.start = false;
+        this.confirm = false;
+        this.finish = true;
+      } else {
+        this.start = false;
+        this.confirm = true;
+        this.finish = false;
+      }
+      this.loading.hide();
+    });
+  }
   verifyEmail() {
     if (this.startForm.invalid) {
       this.startForm.markAllAsTouched();
       return;
     }
+    this.submitting = true;
+    this.loading.show();
     const password = this.startForm.value.password;
     const confPassword = this.startForm.value.confPassword;
     if (password != confPassword) {
@@ -95,13 +151,63 @@ export class AuthSignupComponent {
         this.confirm = false;
         this.finish = false;
       }
+      this.loading.hide();
     });
   }
 
-  SendOTP() {}
+  SubmitReg() {
+    if (this.submitForm.invalid) {
+      this.submitForm.markAllAsTouched();
+      return;
+    }
+    this.sub = true;
+    this.loading.show();
+    let data = {
+      email: this.startForm.value.email,
+      password: this.startForm.value.password,
+      firstName: this.submitForm.value.firstName,
+      lastName: this.submitForm.value.lastName,
+      phoneNumber: this.submitForm.value.phoneNumber,
+      organizationName: this.submitForm.value.organizationName,
+    };
+    this.rs.SubmitReg(data).subscribe((d) => {
+      if (d.isSuccess) {
+        Swal.fire({
+          title: 'Good job!',
+          text: d.message,
+          icon: 'success',
+          showCancelButton: true,
+          customClass: {
+            confirmButton: 'btn btn-primary w-xs mt-2',
+          },
+          cancelButtonColor: '#ef476f',
+          confirmButtonText: 'OK',
+        });
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: d.message,
+          icon: 'error',
+          showCancelButton: true,
+          customClass: {
+            confirmButton: 'btn btn-primary w-xs mt-2',
+          },
+          cancelButtonColor: '#ef476f',
+          confirmButtonText: 'OK',
+        });
+      }
+    });
+    this.loading.hide();
+  }
 
   get g() {
     return this.startForm.controls;
+  }
+  get f() {
+    return this.verifyOTPForm.controls;
+  }
+  get h() {
+    return this.submitForm.controls;
   }
   testimonials = [
     {

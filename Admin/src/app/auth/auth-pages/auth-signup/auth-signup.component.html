@@ -32,6 +32,10 @@
                     8 characters | One uppercase |One lowercase | One number | One special character
                 
                 </small>-->
+                <div *ngIf="g.password.touched && g.password.invalid" class="invalid-feedback">
+                    <div *ngIf="g.password.errors?.required">This field is required.</div>
+                
+                </div>
         </div>
         
     </div>
@@ -42,66 +46,90 @@
                 id="password-input">
             <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
                 type="button" id="password-addon"><i class="las la-eye align-middle fs-18"></i></button>
+                <div *ngIf="g.confPassword.touched && g.confPassword.invalid" class="invalid-feedback">
+                    <div *ngIf="g.confPassword.errors?.required">This field is required.</div>
+                
+                </div>
         </div>
     </div>
     <div class="mb-2" *ngIf="showerror">
         <p class="text-danger text-center">{{confMessage}}</p>
     </div>
     <div class="mb-2">
-        <button class="btn btn-primary w-100" type="submit">Submit</button>
+        <button type="submit" class="btn btn-primary w-100"
+            
+            [disabled]="submitting || startForm.invalid">
+            {{ submitting ? 'Submitting...' : 'Submit' }} </button>
+       
     </div>
     </form>
                     </div>
                     <div *ngIf="confirm">
                         <p class="text-muted mt-2">Enter the otp sent to the email provided</p>
-                        <form [formGroup]="startForm" (ngSubmit)="verifyEmail()">
+                        <form [formGroup]="verifyOTPForm" (ngSubmit)="verifyOTP()">
                     <div class="mb-3">
                         <label for="otp " class="form-label">OTP</label>
-                        <input type="text" class="form-control" id="email" formControlName="email"
-                            [class.is-invalid]="g.email.touched && g.email.invalid" placeholder="Enter email">
-                        <div *ngIf="g.email.touched && g.email.invalid" class="invalid-feedback">
-                            <div *ngIf="g.email.errors?.required">This field is required.</div>
+                        <input type="text" class="form-control" id="otp" formControlName="otp"
+                            [class.is-invalid]="f.otp.touched && f.otp.invalid" placeholder="123456">
+                        <div *ngIf="f.otp.touched && f.otp.invalid" class="invalid-feedback">
+                            <div *ngIf="f.otp.errors?.required">This field is required.</div>
                     
                         </div>
                     </div>
                     <div class="mb-2">
-                        <button class="btn btn-success w-100" type="submit">Verify Email</button>
+                        <button type="submit" class="btn btn-primary w-100"                           
+                            [disabled]="submit || verifyOTPForm.invalid">
+                            {{ submitting ? 'Submit' : 'Verify Email' }} </button>
+                       
                     </div>
                     </form>
                     </div>
                     <div *ngIf="finish">
-                    <form class="auth-input">
+                    <form [formGroup]="submitForm" (ngSubmit)="SubmitReg()" class="auth-input">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" readonly formControlName="email"
+                            [class.is-invalid]="h.email.touched && h.email.invalid"  class="form-control" id="email" placeholder="Enter Email Address">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" [class.is-invalid]="h.phoneNumberouched && h.phoneNumber.invalid" formControlName="phoneNumber" class="form-control" id="phoneNumber" placeholder="+2348012345678">
+                        </div>
 
                         <div class="mb-3">
                             <div class="row">
                             <div class="col-md-6 col-lg-6">
                                 <label for="username" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="firstName" placeholder="Enter First Name">
+                                <input type="text" [class.is-invalid]="h.firstName.touched && h.firstName.invalid" formControlName="firstName" class="form-control" id="firstName" placeholder="Enter First Name">
                             </div>
                             <div class="col-md-6 col-lg-6">
                                 <label for="username" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name">
+                                <input type="text" [class.is-invalid]="h.lastName.touched && h.lastName.invalid" formControlName="lastName" class="form-control" id="lastName" placeholder="Enter Last Name">
                             </div>
                             </div>
                            
                         </div>
                         <div class="mb-3">
                             <label for="username" class="form-label">Company Name</label>
-                            <input type="text" class="form-control" id="username" placeholder="Enter Company Name">
+                            <input type="text" [class.is-invalid]="h.organizationName.touched && h.organizationName.invalid" formControlName="organizationName" class="form-control" id="username" placeholder="Enter Company Name">
                         </div>
                     
 
                         <div class="fs-16 pb-2">
-                            <p class="mb-0 fs-14 text-muted fst-italic">By registering you agree to the Invoika <a
+                            <p class="mb-0 fs-14 text-muted fst-italic">By registering you agree to the SeamlessInvoicing <a
                                     href="javascript:void(0)" class="text-primary text-decoration-underline fst-normal fw-medium">Terms
                                     of Use</a></p>
                         </div>
 
                         <div class="mt-2"  [routerLink]="['/auth/auth-signin']">
-                            <button class="btn btn-primary w-100" type="submit">Sign Up</button>
+                            
+                            <!--<button class="btn btn-primary w-100" type="submit">Sign Up</button>-->
                         </div>
+                        <button type="submit" class="btn btn-primary w-100" [disabled]="sub || submitForm.invalid">
+                            {{ sub ? 'Submit' : 'Register' }} </button>
+                        </form>
 
-                        <div class="mt-4 text-center">
+                       <!-- <div class="mt-4 text-center">
                             <div class="signin-other-title">
                                 <h5 class="fs-15 mb-3 title">Create account with</h5>
                             </div>
@@ -125,13 +153,13 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div>-->
 
                         <div class="mt-4 text-center">
                             <p class="mb-0">Don't have an account ? <a  [routerLink]="['/auth/auth-signin']"
                                     class="fw-medium text-primary text-decoration-underline"> Signin </a> </p>
                         </div>
-                    </form>
+                   
                     </div>
                 </div>
 
